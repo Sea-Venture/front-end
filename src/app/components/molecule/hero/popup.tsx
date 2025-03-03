@@ -1,5 +1,5 @@
 import React from "react";
-import PopupContent from "../atom/popupContent";
+import PopupContent from "../../atom/hero/popupContent";
 
 const Popup = ({
   isOpen,

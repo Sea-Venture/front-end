@@ -1,7 +1,7 @@
 import React from "react";
-import Heading from "../atom/heroSectionHeading";
-import Paragraph from "../atom/landingPageParagraph";
-import Button from "../atom/ButtonText";
+import Heading from "../../atom/nav-bar/heroSectionHeading";
+import Paragraph from "../../atom/nav-bar/landingPageParagraph";
+import Button from "../../atom/nav-bar/ButtonText";
 
 const TextContent = () => {
   return (

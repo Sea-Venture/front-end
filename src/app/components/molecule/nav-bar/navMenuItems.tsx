@@ -1,5 +1,5 @@
 import React from 'react'
-import MenuItemText from '../atom/menuItemText'
+import MenuItemText from '../../atom/nav-bar/menuItemText'
 
 const navMenuItems = ({ menuOpen, navItems }: { menuOpen: boolean, navItems: { name: string, url: string }[] }) => {
   return (

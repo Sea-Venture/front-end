@@ -1,10 +1,10 @@
-import Image from "next/image";
-import  LandingPage  from "./pages/landingpage"
+import Registerpage from "@/app/pages/registerpage";
 
 export default function Home() {
   return (
-
-    <LandingPage />
+    <div>
+    <Registerpage />
+    </div>
 
   );
 }

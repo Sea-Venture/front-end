@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import Paragraph from "../atom/paragraphText"
-import Heading from "../atom/headingText"
-import Button from "../atom/button"
+import Paragraph from "../../atom/hero/paragraphText"
+import Heading from "../../atom/hero/headingText"
+import Button from "../../atom/hero/button"
 
 const hero2 = ({ heading, paragraph, button1, button2 }: { heading: string; paragraph: string; button1: string; button2: string;popupContent: React.ReactNode;
 }) => {

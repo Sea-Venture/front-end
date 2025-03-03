@@ -7,6 +7,12 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      Smooch : ["Smooch Sans", "sans-serif"],
+    },
+    width: {
+      "w-100": "400px",
+    },
     extend: {
       colors: {
         background: "var(--background)",

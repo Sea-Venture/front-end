@@ -1,6 +1,6 @@
 
 import React from "react";
-import Hero2 from "../molecule/hero2";
+import Hero2 from "../../molecule/hero/hero2";
 
 const hero2 = () => {
   return (
