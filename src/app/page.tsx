@@ -1,10 +1,19 @@
 import Image from "next/image";
-import  LandingPage  from "./pages/landingpage"
+
+import Link from 'next/link'
+import LandingPage from "./pages/landingpage";
 
 export default function Home() {
   return (
+    <>
 
-    <LandingPage />
+    <LandingPage/>
 
+      <ul>
+        <li>
+          <Link href="/login">Login</Link>
+        </li>
+      </ul>
+    </>
   );
 }
