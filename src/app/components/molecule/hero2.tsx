@@ -1,14 +1,15 @@
+"use client";
 import React from "react";
 import Paragraph from "../atom/paragraphText"
 import Heading from "../atom/headingText"
 import Button from "../atom/button"
 
-const hero2 = ({ heading1, heading2, paragraph, button1, button2 }: { heading1: string; heading2: string;paragraph: string; button1: string; button2: string }) => {
+const hero2 = ({ heading, paragraph, button1, button2 }: { heading: string; paragraph: string; button1: string; button2: string;popupContent: React.ReactNode;
+}) => {
   return (
     <div className="flex flex-col md:flex-row items-center justify-between md:text-left  mr-auto">
       <div className="md:w-1/2 mr-auto text-darkblue">
-        <Heading headingText={heading1} />
-        <Heading headingText={heading2} />
+        <Heading headingText={heading} />
       </div>
       <div className="md:w-1/2  mr-10">
         <Paragraph paragraphText={paragraph} />
