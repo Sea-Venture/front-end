@@ -1,6 +1,6 @@
 import React from 'react';
-import InputField from '../atom/inputField';
-import LoginButton from '../atom/loginButton';
+import InputField from '../../atom/auth/inputField';
+import LoginButton from '../../atom/auth/loginButton';
 
 const loginform = ({authType}: {authType:string}) => {
 

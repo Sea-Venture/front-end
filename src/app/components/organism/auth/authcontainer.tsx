@@ -1,9 +1,9 @@
 import React from 'react';
-import AuthText from '../atom/authText';
-import AuthSloth from '../atom/authSloth';
-import NavigateToggle from '../atom/navigateToggle';
-import SsoButton from '../atom/ssoButton';
-import LoginForm from '../molecule/loginform';
+import AuthText from '../../atom/auth/authText';
+import AuthSloth from '../../atom/auth/authSloth';
+import NavigateToggle from '../../atom/landingPage/navigateToggle';
+import SsoButton from '../../atom/auth/ssoButton';
+import LoginForm from '../../molecule/auth/loginform';
 
 const AuthContainer = ({ authType, toggleAuthType }: { authType: string; toggleAuthType: () => void }) => {
   if (authType === 'login') {

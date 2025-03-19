@@ -1,11 +1,10 @@
 import React from 'react'
-import Login from '../pages/auth/login'
-
+import Dashboard from '../pages/dashboard/dashboard'
 
 const page = () => {
   return (
-    <Login/>
-    )
+    <Dashboard />
+  )
 }
 
 export default page

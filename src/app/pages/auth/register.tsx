@@ -1,11 +1,11 @@
 "use client"
 
 import React, { useState } from 'react';
-import AuthImageContainer from '../components/organism/authimagecontainer';
-import AuthContainer from '../components/organism/authcontainer';
+import AuthImageContainer from '../../components/organism/auth/authimagecontainer';
+import AuthContainer from '../../components/organism/auth/authcontainer';
 
-const Login = () => {
-  const [authType, setAuthType] = useState('login');
+const Register = () => {
+  const [authType, setAuthType] = useState('register');
 
   const toggleAuthType = () => {
     setAuthType((prevAuthType) => (prevAuthType === 'login' ? 'register' : 'login'));
@@ -27,4 +27,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
