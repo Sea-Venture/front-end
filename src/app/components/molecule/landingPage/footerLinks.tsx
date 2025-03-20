@@ -1,5 +1,5 @@
 import React from "react";
-import PageLinks from "../atom/PageLinks";
+import PageLinks from "../../atom/landingPage/PageLinks";
 
 const links = [
   { name: "Home", href: "/" },
