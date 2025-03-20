@@ -1,5 +1,5 @@
 import React from "react";
-import TextContent from "../molecule/TextContent";
+import TextContent from "../../molecule/landingPage/TextContent";
 
 const HeroSection = () => {
   return (

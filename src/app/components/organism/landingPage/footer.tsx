@@ -1,7 +1,7 @@
 import React from "react";
-import FooterLinks from "../molecule/footerLinks";
-import AppLinks from "../molecule/AppLinks";
-import FooterText from "../atom/FooterText";
+import FooterLinks from "../../molecule/landingPage/footerLinks";
+import AppLinks from "../../molecule/auth/AppLinks";
+import FooterText from "../../atom/landingPage/FooterText";
 
 const Footer = () => {
   return (
