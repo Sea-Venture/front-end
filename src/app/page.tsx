@@ -9,8 +9,6 @@ export default function Home() {
 
     <LandingPage/>
 
-  
-
       <ul>
         <li>
           <Link href="/login">Login</Link>
@@ -24,6 +22,12 @@ export default function Home() {
             </Link>
           
         </li>
+
+        <li>
+            <Link href="/contactUs">
+                Contact Us
+            </Link>
+            </li>
       </ul>
     
     </>
