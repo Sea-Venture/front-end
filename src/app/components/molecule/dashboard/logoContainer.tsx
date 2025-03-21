@@ -13,7 +13,7 @@ const logoContainer = ({ logoName, imageUrl }: { logoName: string; imageUrl: str
                 
             </div> 
 
-            <div className='flex items-center gap-2 hidden md:flex'>
+            <div className='items-center gap-2 hidden md:flex'>
                 <LogoText logoName={logoName} />
             </div>
                 
