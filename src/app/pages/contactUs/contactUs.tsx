@@ -3,7 +3,7 @@ import ContactUs from '../../components/organism/contactUs/contactUs';
 
 const ContactUsPage = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white">
       <main className="flex-grow">
         <ContactUs />
       </main>
