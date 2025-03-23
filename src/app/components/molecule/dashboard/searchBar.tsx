@@ -5,7 +5,6 @@ import SearchBlock from '../../atom/dashboard/searchbar/searchBlock';
 const searchBar = () => {
   return (
     <div>
-      {/* Full Search Bar for Medium to Extra-Large Devices */}
       <div className="hidden sm:flex items-center justify-center bg-white shadow-md rounded-full text-sm
                       xl:w-[750px] xl:h-[55px] mx-auto
                       lg:w-[500px] lg:h-[50px]
@@ -20,7 +19,6 @@ const searchBar = () => {
         </div>
       </div>
 
-      {/* Search Icon Only for Small Devices */}
       <div className="flex sm:hidden justify-center items-center">
         <span className="bg-cyan-500 text-white text-xs p-3 rounded-full">
           <FaSearch className="w-6 h-6" />
