@@ -13,17 +13,20 @@ export default function Home() {
 
       <ul>
         <li>
-          <Link href="/login">Login</Link>
+          <Link href="/api/login">Login</Link>
         </li>
         <li>
-          <Link href="/register">Register</Link>
+          <Link href="/api/register">Register</Link>
         </li>
         <li>
           
-            <Link href="/dashboard">
+            <Link href="/api/user/dashboard">
                 Dashboard
             </Link>
           
+        </li>
+        <li>
+          <Link href="/api/admin/dashboard">AdminDashboard</Link>
         </li>
       </ul>
     

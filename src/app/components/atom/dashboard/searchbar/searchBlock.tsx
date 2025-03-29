@@ -4,7 +4,7 @@ import SearchInput from './searchInput';
 
 const searchBlock = ({ plholder, paraText }: { plholder: string; paraText: string }) => {
   return (
-    <div className="flex flex-col justify-center px-6 w-[34%] hover:bg-gray-100 rounded-full transition">
+    <div className="flex flex-col justify-center px-6 w-[34%] hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition">
 
       <div className="xl:block lg:block hidden">
         <InputPara paraText={paraText} />

@@ -1,8 +1,8 @@
 import React from 'react';
-import DarkModeToggle from '../../darkModeToggle/darkModeToggle';
-import LogoContainer from '../../molecule/dashboard/logoContainer';
-import AvatarContainer from './avatarContainer';
-import Searchbar from '../../molecule/dashboard/searchBar';
+import DarkModeToggle from '../../../darkModeToggle/darkModeToggle';
+import LogoContainer from '../../../molecule/dashboard/logoContainer';
+import AvatarContainer from '../../../organism/dashboard/user/avatarContainer';
+import Searchbar from '../../../molecule/dashboard/searchBar';
 
 const Navbar = () => {
   return (
