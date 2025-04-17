@@ -7,6 +7,7 @@ const dashboard = () => {
   return (
     <>
     <Navbar />
+    
     </>
     )
 }

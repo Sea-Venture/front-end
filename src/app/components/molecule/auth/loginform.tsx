@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import InputField from "../../atom/auth/inputField";
 import LoginButton from "../../atom/auth/loginButton";
 
-
 const loginform = ({ authType }: { authType: string }) => {
   const [formData, setFormData] = useState({ email: "", password: "", username: "" });
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +21,7 @@ const loginform = ({ authType }: { authType: string }) => {
     try {
 
       console.log("formData", formData);
-      const response = await axios.post("http://localhost:8080/users/", {
+      const response = await axios.post("http://localhost:8080/api/user/auth/register", {
         userName: formData.username,
         email: formData.email,
         password: formData.password,
@@ -41,19 +40,20 @@ const loginform = ({ authType }: { authType: string }) => {
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:8080/users/login", {
+      const response = await axios.post("http://localhost:8080/api/user/auth/login", {
         email: formData.email,
         password: formData.password,
       });
 
-      
+      // Save the token in localStorage
+      const token = response.data.token;
+      localStorage.setItem("token", token);
 
       console.log("Login successful:", response.data.user.role);
       const role = response.data.user.role;
-      if(role == "user"){
+      if (role === "user") {
         router.push("/api/user/dashboard");
-      }
-      else if(role == "admin"){
+      } else if (role === "admin") {
         router.push("/api/admin/dashboard");
       }
       alert("Login successful! Redirecting to dashboard...");

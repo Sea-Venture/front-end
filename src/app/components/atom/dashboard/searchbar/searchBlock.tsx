@@ -2,20 +2,29 @@ import React from 'react';
 import InputPara from './inputPara';
 import SearchInput from './searchInput';
 
-const searchBlock = ({ plholder, paraText }: { plholder: string; paraText: string }) => {
-  return (
-    <div className="flex flex-col justify-center px-6 w-[34%] hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition">
+interface SearchBlockProps {
+  plholder: string;
+  paraText: string;
+  eltype: string;
+  options?: string[]; // Optional prop for dropdown options
+}
 
-      <div className="xl:block lg:block hidden">
+const SearchBlock: React.FC<SearchBlockProps> = ({ plholder, paraText, eltype, options }) => {
+  return (
+    <div className="flex flex-col justify-center px-6 w-full sm:w-[34%] hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg sm:rounded-full transition">
+      {/* For larger devices */}
+      <div className="hidden sm:block">
         <InputPara paraText={paraText} />
       </div>
-
-
-      <div className="hidden xl:block lg:block md:block sm:hidden">
-        <SearchInput plholder={plholder} />
+      {/* For smaller devices */}
+      <div className="block sm:hidden">
+        <InputPara paraText={paraText} />
+      </div>
+      <div className="block">
+        <SearchInput plholder={plholder} eltype={eltype} options={options} />
       </div>
     </div>
   );
 };
 
-export default searchBlock;
+export default SearchBlock;
