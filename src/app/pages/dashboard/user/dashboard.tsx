@@ -5,12 +5,12 @@ import CardContainer from "../../../components/organism/card/cardContainer";
 import Profile from "../../../components/organism/profile/profile";
 
 const Dashboard = () => {
-  const [cardDetails, setCardDetails] = useState<any[]>([]); // State to hold card details
-  const [view, setView] = useState<"cards" | "profile">("cards"); // State to manage the current view
+  const [cardDetails, setCardDetails] = useState<any[]>([]);
+  const [view, setView] = useState<"cards" | "profile">("cards");
 
   const handleShowProfile = () => {
-    setView("profile"); // Show the Profile component
-    setCardDetails([]); // Clear the card details
+    setView("profile");
+    setCardDetails([]);
   };
 
   return (

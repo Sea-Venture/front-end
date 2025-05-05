@@ -45,9 +45,9 @@ const loginform = ({ authType }: { authType: string }) => {
         password: formData.password,
       });
 
-      // Save the token in localStorage
       const token = response.data.token;
       localStorage.setItem("token", token);
+      localStorage.setItem("email", formData.email);
 
       console.log("Login successful:", response.data.user.role);
       const role = response.data.user.role;
