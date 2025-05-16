@@ -56,6 +56,9 @@ const loginform = ({ authType }: { authType: string }) => {
       } else if (role === "admin") {
         router.push("/api/admin/dashboard");
       }
+      else if (role === "guide") {
+        router.push("/api/guide/dashboard");
+      }
       alert("Login successful! Redirecting to dashboard...");
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed");

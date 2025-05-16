@@ -130,14 +130,35 @@ export const fetchUserByEmail = async (email: string): Promise<any> => {
   return response.data;
 };
 
-export const createGuiuide = async (guideData: any): Promise<any> => {
+export const fetchUserIdByEmail = async (email: string): Promise<any> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("You are not logged in. Please log in to fetch user ID by email.");
+  }
+
+  const response = await axios.get(
+    `${API_BASE_URL}/api/user/profile/getid`,
+    {
+      params: { email },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+}
+
+
+export const createGuide = async (guideData: any): Promise<any> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to create a guide.");
   }
 
   const response = await axios.post(
-    `${API_BASE_URL}/api/guide`,
+    `${API_BASE_URL}/api/guide/`,
     guideData,
     {
       headers: {
@@ -150,14 +171,14 @@ export const createGuiuide = async (guideData: any): Promise<any> => {
   return response.data;
 }
 
-export const updateUserRole = async (userId: string, role: string): Promise<any> => {
+export const updateUserRole = async (userId: Number, role: string): Promise<any> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to update user role.");
   }
 
   const response = await axios.put(
-    `${API_BASE_URL}/api/user/${userId}`,
+    `${API_BASE_URL}/api/user/profile/role/${userId}`,
     { role },
     {
       headers: {
@@ -185,6 +206,48 @@ export const fetchAllBeaches = async (): Promise<any[]> => {
   return response.data;
 }
 
+export const createLocation = async (locationData: {
+  name: string;
+  lat: number;
+  lng: number;
+  pic: string;
+}): Promise<any> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("You are not logged in. Please log in to create a location.");
+  }
 
+  const response = await axios.post(
+    `${API_BASE_URL}/api/user/locations/`,
+    locationData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
+  return response.data;
+};
+
+export const createEvent = async (eventData: {}): Promise<any> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("You are not logged in. Please log in to create an event.");
+  }
+
+  const response = await axios.post(
+    `${API_BASE_URL}/api/user/events/`,
+    eventData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+};
 
