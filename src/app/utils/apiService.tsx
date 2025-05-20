@@ -1,6 +1,7 @@
 import axios from "axios";
+import { getIdToken } from "./firebase";
 
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "http://seaventures.ddns.net:8080";
 
 export const fetchLocations = async (): Promise<{ id: string; name: string }[]> => {
   const token = localStorage.getItem("token");
@@ -248,6 +249,16 @@ export const createEvent = async (eventData: {}): Promise<any> => {
     }
   );
 
+  return response.data;
+};
+
+export const registerUser = async (userData: { userName: string; email: string; password: string }) => {
+  const response = await axios.post(`${API_BASE_URL}/api/user/auth/register`, userData);
+  return response.data;
+};
+
+export const loginUser = async (loginData: { email: string; password: string }) => {
+  const response = await axios.post(`${API_BASE_URL}/api/user/auth/login`, loginData);
   return response.data;
 };
 

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import InputField from "../../atom/auth/inputField";
 import LoginButton from "../../atom/auth/loginButton";
+import { registerUser, loginUser } from "../../../utils/apiService";
 
 const loginform = ({ authType }: { authType: string }) => {
   const [formData, setFormData] = useState({ email: "", password: "", username: "" });
@@ -17,17 +17,12 @@ const loginform = ({ authType }: { authType: string }) => {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-
     try {
-
-      console.log("formData", formData);
-      const response = await axios.post("http://localhost:8080/api/user/auth/register", {
+      await registerUser({
         userName: formData.username,
         email: formData.email,
         password: formData.password,
       });
-
-      console.log("Registration successful:", response);
       alert("Registration successful! Redirecting to dashboard...");
       router.push("/api/user/dashboard");
     } catch (err: any) {
@@ -38,25 +33,21 @@ const loginform = ({ authType }: { authType: string }) => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-
     try {
-      const response = await axios.post("http://localhost:8080/api/user/auth/login", {
+      const response = await loginUser({
         email: formData.email,
         password: formData.password,
       });
-
-      const token = response.data.token;
+      const token = response.token;
       localStorage.setItem("token", token);
       localStorage.setItem("email", formData.email);
 
-      console.log("Login successful:", response.data.user.role);
-      const role = response.data.user.role;
+      const role = response.user.role;
       if (role === "user") {
         router.push("/api/user/dashboard");
       } else if (role === "admin") {
         router.push("/api/admin/dashboard");
-      }
-      else if (role === "guide") {
+      } else if (role === "guide") {
         router.push("/api/guide/dashboard");
       }
       alert("Login successful! Redirecting to dashboard...");
@@ -116,6 +107,7 @@ const loginform = ({ authType }: { authType: string }) => {
             name="email"
           />
         </div>
+
         <div className="mb-4">
           <InputField
             type="password"
