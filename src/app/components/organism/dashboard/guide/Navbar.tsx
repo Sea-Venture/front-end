@@ -14,7 +14,7 @@ const Navbar = ({
   return (
     <nav className="p-2 bg-gray-100 dark:bg-gray-800 flex items-center justify-between w-full sticky top-0 z-10 shadow-md">
       <div className="flex-shrink-0">
-        <LogoContainer logoName="SeaVentures" imageUrl="https://avatars.githubusercontent.com/u/131803346?v=4" />
+        <LogoContainer logoName="SeaVentures" imageUrl="https://w7.pngwing.com/pngs/53/343/png-transparent-red-man-surfing-logo-surfing-investment-banking-surf-the-sea-beach-photography-people.png" />
       </div>
 
       <div className="flex-grow mx-auto">
@@ -27,7 +27,7 @@ const Navbar = ({
           <div className="flex items-center gap-2 rounded-full bg-slate-200 dark:bg-gray-700 p-2 px-2">
             <AvatarContainer
               propicUrl="https://avatars.githubusercontent.com/u/131803346?v=4"
-              onProfileClick={onShowProfile} // Pass onShowProfile to AvatarContainer
+              onProfileClick={onShowProfile}
             />
           </div>
         </div>

@@ -262,3 +262,13 @@ export const loginUser = async (loginData: { email: string; password: string }) 
   return response.data;
 };
 
+export const weatherUpdate = async (beach: { beach: string }) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${API_BASE_URL}/api/user/forecast/`, {
+    params: { beach: beach.beach },
+  });
+  return response.data;
+};
+
+
+

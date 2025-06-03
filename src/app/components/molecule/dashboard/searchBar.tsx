@@ -82,12 +82,19 @@ const searchBar = ({ setCardDetails }: { setCardDetails: React.Dispatch<React.Se
           locationName: locationDetails.name,
           locationImage: locationDetails.pic,
           activityName: activityDetails.name,
+          lat: locationDetails.lat,
+          lng: locationDetails.lng,
         });
       }
+
+      
   
       setCardDetails(cardDetails);
       setResults(cardDetails);
+
+
       console.log("Card Details:", cardDetails);
+
       setError(null);
     } catch (err: any) {
       setError(err.message);
@@ -117,11 +124,11 @@ const searchBar = ({ setCardDetails }: { setCardDetails: React.Dispatch<React.Se
           plholder="Select your activity"
           paraText="Activity"
           eltype="select"
-          options={activities.map((activity) => activity.name)} // Pass names for display
+          options={activities.map((activity) => activity.name)}
           onChange={(e) => {
             const target = e.target as HTMLSelectElement;
             const selected = activities.find((activity) => activity.name === target.value);
-            setSelectedActivity(selected ? selected.id : null); // Store the ID
+            setSelectedActivity(selected ? selected.id : null);
           }}
         />
         <SearchBlock
@@ -155,11 +162,11 @@ const searchBar = ({ setCardDetails }: { setCardDetails: React.Dispatch<React.Se
               plholder="Select a location"
               paraText="Location"
               eltype="select"
-              options={locations.map((location) => location.name)} // Pass names for display
+              options={locations.map((location) => location.name)}
               onChange={(e) => {
                 const target = e.target as HTMLSelectElement;
                 const selected = locations.find((location) => location.name === target.value);
-                setSelectedLocation(selected ? selected.id : null); // Store the ID
+                setSelectedLocation(selected ? selected.id : null);
               }}
           />
           </div>
@@ -168,11 +175,11 @@ const searchBar = ({ setCardDetails }: { setCardDetails: React.Dispatch<React.Se
                 plholder="Select your activity"
                 paraText="Activity"
                 eltype="select"
-                options={activities.map((activity) => activity.name)} // Pass names for display
+                options={activities.map((activity) => activity.name)}
                 onChange={(e) => {
                   const target = e.target as HTMLSelectElement;
                   const selected = activities.find((activity) => activity.name === target.value);
-                  setSelectedActivity(selected ? selected.id : null);  // Store the ID
+                  setSelectedActivity(selected ? selected.id : null);
                 }}
             />
           </div>

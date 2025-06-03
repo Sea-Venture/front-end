@@ -13,6 +13,8 @@ const CardContainer = ({ cardDetails }: { cardDetails: any[] }) => {
           locationName={card.locationName}
           activityName={card.activityName}
           description={card.description}
+          lat={card.lat}
+          lng={card.lng}
           rating={4.5} // You can replace this with actual rating if available
         />
       ))}
