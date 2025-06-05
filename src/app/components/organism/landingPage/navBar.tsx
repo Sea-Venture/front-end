@@ -9,7 +9,7 @@ import NavMenuItems from '../../molecule/landingPage/navMenuItems';
 const navItems = [
   { name: "Home", url: "/" },
   { name: "About Us", url: "/about" },
-  { name: "Blog", url: "#" },
+  { name: "Blog", url: "/blog" },
   { name: "Contact Us", url: "/contact" },
 ];
 
@@ -64,7 +64,7 @@ const NavBar = () => {
           </div>
         )}
       </nav>
-      {/* Spacer for fixed navbar */}
+      {/* Spacer for fixed navbar */}1
       <div className="h-16 md:h-20"></div>
     </NavContainer>
   );
