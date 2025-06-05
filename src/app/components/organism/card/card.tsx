@@ -9,8 +9,7 @@ import ActivityName from '../../atom/dashboard/card/activityName';
 import EventDescription from '../../atom/dashboard/card/eventDescription';
 import IconButton from '../../atom/dashboard/card/iconButton';
 import { weatherUpdate } from '../../../utils/apiService';
-import WeatherCard from '../weather/weatherCard'; // Make sure this is the correct import
-import LocationCard from '../weather/locationCard'; // Import your locationCard
+import WeatherCard from '../weather/weatherCard';
 
 interface CardProps {
   imageUrl: string;
@@ -34,7 +33,7 @@ const Card: React.FC<CardProps> = ({
   lng
 }) => {
   const [showWeather, setShowWeather] = useState(false);
-  const [weatherData, setWeatherData] = useState<any>(null);
+  const [weatherData, setWeatherData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
 
@@ -46,7 +45,7 @@ const Card: React.FC<CardProps> = ({
       console.log("Fetching weather for:", newLocation);
       const data = await weatherUpdate({ beach: newLocation });
       setWeatherData(data);
-    } catch (err) {
+    } catch {
       setWeatherData({ error: "Failed to load weather." });
     }
     setLoading(false);
@@ -59,7 +58,6 @@ const Card: React.FC<CardProps> = ({
 
   const handleMapClick = () => {
     setShowMap(true);
-
   };
 
   const handleCloseMap = () => {
@@ -71,6 +69,16 @@ const Card: React.FC<CardProps> = ({
     if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
+
+  // Type guard for weather error
+  function isWeatherError(obj: unknown): obj is { error: string } {
+    return (
+      typeof obj === "object" &&
+      obj !== null &&
+      "error" in obj &&
+      typeof (obj as { error: unknown }).error === "string"
+    );
+  }
 
   return (
     <div className="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-96">
@@ -114,7 +122,7 @@ const Card: React.FC<CardProps> = ({
             {!loading && weatherData && (
               <WeatherCard weather={weatherData} location={capitalizeFirstLetter(locationName)} />
             )}
-            {!loading && weatherData?.error && (
+            {!loading && isWeatherError(weatherData) && (
               <div className="text-red-500">{weatherData.error}</div>
             )}
           </div>

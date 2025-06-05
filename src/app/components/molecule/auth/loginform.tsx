@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import InputField from "../../atom/auth/inputField";
 import LoginButton from "../../atom/auth/loginButton";
-import { registerUser, loginUser } from "../../../utils/apiService";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../utils/firebaseConfig";
 
-const loginform = ({ authType }: { authType: string }) => {
+const LoginForm = ({ authType }: { authType: string }) => {
   const [formData, setFormData] = useState({ email: "", password: "", username: "" });
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -18,15 +19,14 @@ const loginform = ({ authType }: { authType: string }) => {
     e.preventDefault();
     setError(null);
     try {
-      await registerUser({
-        userName: formData.username,
-        email: formData.email,
-        password: formData.password,
-      });
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      const token = await userCredential.user.getIdToken();
+      localStorage.setItem("token", token);
       alert("Registration successful! Redirecting to dashboard...");
       router.push("/api/user/dashboard");
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed");
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Registration failed";
+      setError(errorMsg);
     }
   };
 
@@ -34,25 +34,14 @@ const loginform = ({ authType }: { authType: string }) => {
     e.preventDefault();
     setError(null);
     try {
-      const response = await loginUser({
-        email: formData.email,
-        password: formData.password,
-      });
-      const token = response.token;
+      const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      const token = await userCredential.user.getIdToken();
       localStorage.setItem("token", token);
-      localStorage.setItem("email", formData.email);
-
-      const role = response.user.role;
-      if (role === "user") {
-        router.push("/api/user/dashboard");
-      } else if (role === "admin") {
-        router.push("/api/admin/dashboard");
-      } else if (role === "guide") {
-        router.push("/api/guide/dashboard");
-      }
       alert("Login successful! Redirecting to dashboard...");
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed");
+      router.push("/api/user/dashboard");
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Login failed";
+      setError(errorMsg);
     }
   };
 
@@ -107,7 +96,6 @@ const loginform = ({ authType }: { authType: string }) => {
             name="email"
           />
         </div>
-
         <div className="mb-4">
           <InputField
             type="password"
@@ -127,4 +115,4 @@ const loginform = ({ authType }: { authType: string }) => {
   return null;
 };
 
-export default loginform;
+export default LoginForm;

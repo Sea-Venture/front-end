@@ -11,15 +11,21 @@ import {
   fetchEventByLocationId,
   fetchEventByLocationIdAndActivityId,
 } from "../../../utils/apiService";
+import { CardDetail } from "@/app/types/CardDetail";
 
-const searchBar = ({ setCardDetails }: { setCardDetails: React.Dispatch<React.SetStateAction<any[]>> }) => {
+
+interface EventItem {
+  location_id: string;
+  activity_id: string;
+  name: string;
+  description: string;
+}
+
+const SearchBar = ({ setCardDetails }: { setCardDetails: React.Dispatch<React.SetStateAction<CardDetail[]>> }) => {
   const [locations, setLocations] = useState<{ id: string; name: string }[]>([]);
   const [activities, setActivities] = useState<{ id: string; name: string }[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null); 
   const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
-  const [extractedLocationID, setExtractedLocationID] = useState<string | null>(null);
-  const [extractedActivityID, setExtractedActivityID] = useState<string | null>(null);
-  const [results, setResults] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [showMiniSearch, setShowMiniSearch] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
@@ -42,8 +48,8 @@ const searchBar = ({ setCardDetails }: { setCardDetails: React.Dispatch<React.Se
         setLocations(locationsData);
         setActivities(activitiesData);
         setError(null);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load data.");
       }
     };
 
@@ -52,52 +58,48 @@ const searchBar = ({ setCardDetails }: { setCardDetails: React.Dispatch<React.Se
 
   const handleSearch = async () => {
     try {
-      let data = [];
+      let data: EventItem[] = [];
       if (selectedLocation && selectedActivity) {
-        data = await fetchEventByLocationIdAndActivityId(selectedLocation, selectedActivity);
+        data = await fetchEventByLocationIdAndActivityId(selectedLocation, selectedActivity) as unknown as EventItem[];
       } else if (selectedLocation) {
-        data = await fetchEventByLocationId(selectedLocation);
+        data = await fetchEventByLocationId(selectedLocation) as unknown as EventItem[];
       } else if (selectedActivity) {
-        data = await fetchEventByActivityId(selectedActivity);
+        data = await fetchEventByActivityId(selectedActivity) as unknown as EventItem[];
       } else {
         setError("Please select at least one filter.");
         return;
       }
 
-      const extractedData = data.map((item: any) => ({
+      const extractedData = data.map((item) => ({
         locationId: item.location_id,
         activityId: item.activity_id,
         name: item.name,
         description: item.description,
       }));
-  
-      const cardDetails = [];
+
+      const cardDetails: CardDetail[] = [];
       for (const item of extractedData) {
-        const locationDetails = await fetchLocationById(item.locationId);
-        const activityDetails = await fetchActivityById(item.activityId);
-  
+        const locationDetails = await fetchLocationById(item.locationId) as { name: string; pic: string; lat: number; lng: number };
+        const activityDetails = await fetchActivityById(item.activityId) as { name: string };
+
         cardDetails.push({
-          eventName: item.name,
-          description: item.description,
-          locationName: locationDetails.name,
-          locationImage: locationDetails.pic,
-          activityName: activityDetails.name,
-          lat: locationDetails.lat,
-          lng: locationDetails.lng,
+          eventName: String(item.name),
+          description: String(item.description),
+          locationName: String(locationDetails.name),
+          imageUrl: String(locationDetails.pic), // <-- changed from locationImage to imageUrl
+          activityName: String(activityDetails.name),
+          lat: Number(locationDetails.lat),
+          lng: Number(locationDetails.lng),
         });
       }
 
-      
-  
       setCardDetails(cardDetails);
-      setResults(cardDetails);
-
 
       console.log("Card Details:", cardDetails);
 
       setError(null);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Search failed.");
     }
   };
 
@@ -201,4 +203,4 @@ const searchBar = ({ setCardDetails }: { setCardDetails: React.Dispatch<React.Se
   );
 };
 
-export default searchBar;
+export default SearchBar;

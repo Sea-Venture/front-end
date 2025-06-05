@@ -26,7 +26,9 @@ const AvatarContainer = ({ propicUrl }: { propicUrl: string }) => {
       </div>
       {menuOpen && (
         <div className="absolute top-10 right-0 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-          <AvatarMenu menuItems={navMenuItems} />
+          <AvatarMenu menuItems={navMenuItems} onProfileClick={function (): void {
+            throw new Error("Function not implemented.");
+          } } />
         </div>
       )}
     </div>

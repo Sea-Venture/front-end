@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getIdToken } from "./firebase";
 
 const API_BASE_URL = "http://seaventures.ddns.net:8080";
 
@@ -15,7 +14,7 @@ export const fetchLocations = async (): Promise<{ id: string; name: string }[]> 
     },
   });
 
-  return response.data; // Ensure the API returns an array of objects with `id` and `name`
+  return response.data;
 };
 
 export const fetchActivities = async (): Promise<{ id: string; name: string }[]> => {
@@ -30,10 +29,10 @@ export const fetchActivities = async (): Promise<{ id: string; name: string }[]>
     },
   });
 
-  return response.data; // Ensure the API returns an array of objects with `id` and `name`
+  return response.data;
 };
 
-export const fetchActivityById = async (id: string): Promise<any> => {
+export const fetchActivityById = async (id: string): Promise<Record<string, unknown>> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to fetch activity by ID.");
@@ -48,7 +47,7 @@ export const fetchActivityById = async (id: string): Promise<any> => {
   return response.data;
 }
 
-export const  fetchLocationById = async (id: string): Promise<any> => {
+export const fetchLocationById = async (id: string): Promise<Record<string, unknown>> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to fetch location by ID.");
@@ -63,7 +62,7 @@ export const  fetchLocationById = async (id: string): Promise<any> => {
   return response.data;
 }
 
-export const fetchEventByActivityId = async (id: string): Promise<any[]> => {
+export const fetchEventByActivityId = async (id: string): Promise<Record<string, unknown>[]> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to fetch events.");
@@ -79,7 +78,7 @@ export const fetchEventByActivityId = async (id: string): Promise<any[]> => {
   return data
 }
 
-export const fetchEventByLocationId = async (id: string): Promise<any[]> => {
+export const fetchEventByLocationId = async (id: string): Promise<Record<string, unknown>[]> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to fetch events.");
@@ -95,7 +94,10 @@ export const fetchEventByLocationId = async (id: string): Promise<any[]> => {
   return data
 }
 
-export const fetchEventByLocationIdAndActivityId = async (locationId: string, activityId: string): Promise<any[]> => {
+export const fetchEventByLocationIdAndActivityId = async (
+  locationId: string,
+  activityId: string
+): Promise<Record<string, unknown>[]> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to fetch events.");
@@ -111,7 +113,7 @@ export const fetchEventByLocationIdAndActivityId = async (locationId: string, ac
   return data
 }
 
-export const fetchUserByEmail = async (email: string): Promise<any> => {
+export const fetchUserByEmail = async (email: string): Promise<Record<string, unknown>> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to fetch user by email.");
@@ -119,11 +121,11 @@ export const fetchUserByEmail = async (email: string): Promise<any> => {
 
   const response = await axios.post(
     `${API_BASE_URL}/api/user/profile/`,
-    { email }, // Send the email in the request body
+    { email },
     {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // Ensure the content type is JSON
+        "Content-Type": "application/json",
       },
     }
   );
@@ -131,7 +133,7 @@ export const fetchUserByEmail = async (email: string): Promise<any> => {
   return response.data;
 };
 
-export const fetchUserIdByEmail = async (email: string): Promise<any> => {
+export const fetchUserIdByEmail = async (email: string): Promise<{ id: string }> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to fetch user ID by email.");
@@ -152,7 +154,7 @@ export const fetchUserIdByEmail = async (email: string): Promise<any> => {
 }
 
 
-export const createGuide = async (guideData: any): Promise<any> => {
+export const createGuide = async (guideData: Record<string, unknown>): Promise<Record<string, unknown>> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to create a guide.");
@@ -172,7 +174,7 @@ export const createGuide = async (guideData: any): Promise<any> => {
   return response.data;
 }
 
-export const updateUserRole = async (userId: Number, role: string): Promise<any> => {
+export const updateUserRole = async (userId: number, role: string): Promise<Record<string, unknown>> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to update user role.");
@@ -192,7 +194,7 @@ export const updateUserRole = async (userId: Number, role: string): Promise<any>
   return response.data;
 }
 
-export const fetchAllBeaches = async (): Promise<any[]> => {
+export const fetchAllBeaches = async (): Promise<Record<string, unknown>[]> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to fetch all beachers.");
@@ -212,7 +214,7 @@ export const createLocation = async (locationData: {
   lat: number;
   lng: number;
   pic: string;
-}): Promise<any> => {
+}): Promise<Record<string, unknown>> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to create a location.");
@@ -232,7 +234,7 @@ export const createLocation = async (locationData: {
   return response.data;
 };
 
-export const createEvent = async (eventData: {}): Promise<any> => {
+export const createEvent = async (eventData: object): Promise<Record<string, unknown>> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("You are not logged in. Please log in to create an event.");
@@ -252,18 +254,17 @@ export const createEvent = async (eventData: {}): Promise<any> => {
   return response.data;
 };
 
-export const registerUser = async (userData: { userName: string; email: string; password: string }) => {
+export const registerUser = async (userData: { userName: string; email: string; password: string }): Promise<Record<string, unknown>> => {
   const response = await axios.post(`${API_BASE_URL}/api/user/auth/register`, userData);
   return response.data;
 };
 
-export const loginUser = async (loginData: { email: string; password: string }) => {
+export const loginUser = async (loginData: { email: string; password: string }): Promise<Record<string, unknown>> => {
   const response = await axios.post(`${API_BASE_URL}/api/user/auth/login`, loginData);
   return response.data;
 };
 
-export const weatherUpdate = async (beach: { beach: string }) => {
-  const token = localStorage.getItem("token");
+export const weatherUpdate = async (beach: { beach: string }): Promise<Record<string, unknown>> => {
   const response = await axios.get(`${API_BASE_URL}/api/user/forecast/`, {
     params: { beach: beach.beach },
   });

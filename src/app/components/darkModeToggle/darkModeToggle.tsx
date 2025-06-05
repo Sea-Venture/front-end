@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FiSun, FiMoon } from "react-icons/fi"; // Import icons from react-icons
 
 export default function DarkModeToggle() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const {  setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

@@ -21,9 +21,6 @@ const AuthContainer = ({ authType, toggleAuthType }: { authType: string; toggleA
           <div className="">
             <SsoButton provider="google" />
           </div>
-          <div className="mt-2">
-            <SsoButton provider="facebook" />
-          </div>
         </div>
         <div className="mt-2">
           <NavigateToggle mainText="Don't have an account?" subText="Register" onClick={toggleAuthType} />
@@ -44,9 +41,6 @@ const AuthContainer = ({ authType, toggleAuthType }: { authType: string; toggleA
         <div className="mt-2">
           <div className="">
             <SsoButton provider="google" />
-          </div>
-          <div className="mt-2">
-            <SsoButton provider="facebook" />
           </div>
         </div>
         <div className="mt-2">

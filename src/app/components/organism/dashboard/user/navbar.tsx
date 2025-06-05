@@ -3,12 +3,13 @@ import DarkModeToggle from "../../../darkModeToggle/darkModeToggle";
 import LogoContainer from "../../../molecule/dashboard/logoContainer";
 import AvatarContainer from "./avatarContainer";
 import Searchbar from "../../../molecule/dashboard/searchBar";
+import { CardDetail } from "../../../../types/CardDetail"; // Adjust the path if needed
 
 const Navbar = ({
   setCardDetails,
   onShowProfile,
 }: {
-  setCardDetails: React.Dispatch<React.SetStateAction<any[]>>;
+  setCardDetails: React.Dispatch<React.SetStateAction<CardDetail[]>>;
   onShowProfile: () => void;
 }) => {
   return (
@@ -27,7 +28,7 @@ const Navbar = ({
           <div className="flex items-center gap-2 rounded-full bg-slate-200 dark:bg-gray-700 p-2 px-2">
             <AvatarContainer
               propicUrl="https://avatars.githubusercontent.com/u/131803346?v=4"
-              onProfileClick={onShowProfile} // Pass onShowProfile to AvatarContainer
+              onProfileClick={onShowProfile}
             />
           </div>
         </div>

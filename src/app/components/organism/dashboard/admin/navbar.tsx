@@ -12,20 +12,15 @@ const Navbar = () => {
         <LogoContainer logoName="SeaVentures" imageUrl="https://avatars.githubusercontent.com/u/131803346?v=4" />
       </div>
 
-
       <div className="flex-grow mx-auto">
-        <Searchbar />
+        <Searchbar setCardDetails={() => {}} />
       </div>
 
-
       <div className="flex items-center gap-4 flex-shrink-0">
-
         <DarkModeToggle />
-
-
         <div className="flex items-center justify-center border-4 border-gray-100 dark:border-gray-800 rounded-full p-2">
           <div className="flex items-center gap-2 rounded-full bg-slate-200 dark:bg-gray-700 p-2 px-2">
-            <AvatarContainer propicUrl="https://avatars.githubusercontent.com/u/131803346?v=4" />
+            <AvatarContainer propicUrl="https://avatars.githubusercontent.com/u/131803346?v=4" onProfileClick={() => {}} />
           </div>
         </div>
       </div>

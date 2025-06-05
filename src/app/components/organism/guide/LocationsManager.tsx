@@ -33,8 +33,24 @@ const LocationsManager = () => {
       });
       setMessage("✅ Location created successfully!");
       setForm({ name: "", lat: "", lng: "", pic: "" });
-    } catch (error: any) {
-      setMessage(error?.response?.data?.message || "❌ Failed to create location.");
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as { response?: unknown }).response === "object" &&
+        (error as { response?: { data?: { message?: string } } }).response &&
+        "data" in (error as { response?: { data?: unknown } }).response! &&
+        typeof ((error as { response: { data?: unknown } }).response as { data?: unknown }).data === "object" &&
+        ((error as { response: { data?: { message?: string } } }).response as { data?: { message?: string } }).data &&
+        "message" in ((error as { response: { data?: { message?: string } } }).response as { data?: { message?: string } }).data!
+      ) {
+        setMessage(
+          (((error as { response: { data: { message?: string } } }).response.data).message) ||
+            "❌ Failed to create location.")
+      } else {
+        setMessage("❌ Failed to create location.");
+      }
     } finally {
       setLoading(false);
       setTimeout(() => setMessage(null), 3500);
@@ -119,6 +135,6 @@ const LocationsManager = () => {
       )}
     </div>
   );
-};
+}
 
 export default LocationsManager;

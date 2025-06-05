@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import Navbar from "../../../components/organism/dashboard/user/navbar";
 import CardContainer from "../../../components/organism/card/cardContainer";
 import Profile from "../../../components/organism/profile/profile";
+import { CardDetail } from "../../../types/CardDetail"; // <-- Import the type
 
 const Dashboard = () => {
-  const [cardDetails, setCardDetails] = useState<any[]>([]);
+  const [cardDetails, setCardDetails] = useState<CardDetail[]>([]); // <-- Use CardDetail[]
   const [view, setView] = useState<"cards" | "profile">("cards");
 
   const handleShowProfile = () => {

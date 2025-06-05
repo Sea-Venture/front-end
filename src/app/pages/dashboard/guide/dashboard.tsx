@@ -6,6 +6,7 @@ import Profile from "../../../components/organism/profile/profile";
 import LocationsManager from "../../../components/organism/guide/LocationsManager";
 import EventsManager from "../../../components/organism/guide/EventsManager";
 import { FaMapMarkerAlt, FaCalendarAlt, FaUser, FaHome } from "react-icons/fa";
+import { CardDetail } from "../../../types/CardDetail"; // <-- Import the type
 
 const TABS = [
   { key: "cards", label: "Dashboard", description: "Overview and quick actions", icon: <FaHome /> },
@@ -17,7 +18,7 @@ const TABS = [
 type ViewType = typeof TABS[number]["key"];
 
 const Dashboard = () => {
-  const [cardDetails, setCardDetails] = useState<any[]>([]);
+  const [cardDetails, setCardDetails] = useState<CardDetail[]>([]); // <-- Use CardDetail[]
   const [view, setView] = useState<ViewType>("cards");
   const [hoveredTab, setHoveredTab] = useState<ViewType | null>(null);
 

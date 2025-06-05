@@ -42,8 +42,24 @@ const EventsManager = () => {
       });
       setMessage("✅ Event created successfully!");
       setForm({ name: "", description: "", location_id: "", activity_id: "" });
-    } catch (error: any) {
-      setMessage(error?.response?.data?.message || "❌ Failed to create event.");
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as { response?: unknown }).response === "object" &&
+        (error as { response?: { data?: { message?: string } } }).response &&
+        "data" in (error as { response?: { data?: unknown } }).response! &&
+        typeof ((error as { response: { data?: unknown } }).response as { data?: unknown }).data === "object" &&
+        ((error as { response: { data?: { message?: string } } }).response as { data?: { message?: string } }).data &&
+        "message" in ((error as { response: { data?: { message?: string } } }).response as { data?: { message?: string } }).data!
+      ) {
+        setMessage(
+          (((error as { response: { data: { message?: string } } }).response.data).message) ||
+            "❌ Failed to create event.")
+      } else {
+        setMessage("❌ Failed to create event.");
+      }
     } finally {
       setLoading(false);
       setTimeout(() => setMessage(null), 3500);

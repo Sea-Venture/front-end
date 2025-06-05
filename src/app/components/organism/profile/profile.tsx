@@ -1,11 +1,10 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileTitle from '../../atom/dashboard/profile/profileTitle';
 import PictureContainer from '../../molecule/profile/pictureContainer';
 import Role from '../../atom/dashboard/profile/role';
 import UserName from '../../atom/dashboard/profile/userName';
 import { fetchUserByEmail, fetchAllBeaches, createGuide, updateUserRole, fetchUserIdByEmail } from '../../../utils/apiService'; 
 import GuideButton from '../../molecule/profile/guideButton';
-import { userAgent } from 'next/server';
 
 type FormDataType = {
   f_name: string;
@@ -18,11 +17,23 @@ type FormDataType = {
   beach_id: number;
 };
 
+interface UserData {
+  profilePicture?: string;
+  userName?: string;
+  role?: string;
+  // add other properties as needed
+}
+
+interface Beach {
+  beach_id: number;
+  beach_name: string;
+}
+
 const Profile = () => {
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [beaches, setBeaches] = useState<any[]>([]);
+  const [beaches, setBeaches] = useState<Beach[]>([]);
   const [formData, setFormData] = useState<FormDataType>({
     f_name: '',
     l_name: '',
@@ -42,10 +53,9 @@ const Profile = () => {
           throw new Error("Email not found in localStorage");
         }
         const data = await fetchUserByEmail(email);
-        console.log("User data fetched:", data);
         setUserData(data);
         setError(null);
-      } catch (error) {
+      } catch {
         setError("Failed to fetch user data. Please try again later.");
       }
     };
@@ -53,10 +63,17 @@ const Profile = () => {
     const fetchBeachesData = async () => {
       try {
         const beachesData = await fetchAllBeaches();
-        console.log("Beaches fetched:", beachesData);
-        setBeaches(beachesData);
-      } catch (error) {
-        console.error("Failed to fetch beaches:", error);
+        setBeaches(
+          Array.isArray(beachesData)
+            ? beachesData.map((b) => ({
+                beach_id: Number((b as Record<string, unknown>).beach_id),
+                beach_name: String((b as Record<string, unknown>).beach_name),
+              }))
+            : []
+        );
+      } catch {
+        // Optionally handle error here
+        // setBeaches([]);
       }
     };
 
@@ -96,15 +113,8 @@ const Profile = () => {
       const fileName = `${formData.f_name}-${formData.l_name}-${name}-${Date.now()}.${file.name.split('.').pop()}`;
       const filePath = `${folderPath}${fileName}`;
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64Data = reader.result as string;
-        const link = document.createElement("a");
-        link.href = base64Data;
-        link.click();
-      };
-      reader.readAsDataURL(file);
-
+      // You may want to upload the file here instead of just creating a link
+      // For now, just set the file path in the form data
       setFormData((prev) => ({
         ...prev,
         [name]: filePath,
@@ -114,40 +124,33 @@ const Profile = () => {
 
   const sendFormData = async () => {
     try {
-
-      console.log("Form data before sending:", formData);
       const guideData = {
         f_name: formData.f_name,
         l_name: formData.l_name,
-        licence_front: formData.licence_front, // File path
+        licence_front: formData.licence_front,
         licence_back: formData.licence_back,
-        area: formData.area,   // File path
-        nic_photo: formData.nic_photo,         // File path
+        area: formData.area,
+        nic_photo: formData.nic_photo,
         phone_number: formData.phone_number,
         beach_id: formData.beach_id,
       };
 
-      console.log("Guide data to be sent:", guideData);
-
-      // Send the guide data to the backend
       const email = localStorage.getItem("email");
       if (!email) {
         throw new Error("Email is null or undefined");
       }
       const userId = await fetchUserIdByEmail(email);
-      const response = await createGuide(guideData);
+      await createGuide(guideData);
 
       const role = "guide";
+      await updateUserRole(Number(userId.id), role);
 
-      updateUserRole(userId.user_id, role);
-      console.log("Guide created successfully:", response);
       alert("Guide created successfully! Please log in again to update your role.");
       closeModal();
-
-      // // Redirect to the login page
       window.location.href = "/api/login";
-    } catch (error) {
-      console.error("Failed to create guide:", error);
+    } catch (err) {
+      // Optionally show error to user
+      console.error("Failed to create guide:", err);
     }
   };
 
@@ -155,14 +158,21 @@ const Profile = () => {
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
       <ProfileTitle title="User Profile" />
       <div className="mt-4 p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
-        <PictureContainer
+        {/* <PictureContainer
           imageUrl={userData.profilePicture || "https://s3.amazonaws.com/37assets/svn/765-default-avatar.png"}
           onImageChange={(file: File | null) => {
-            console.log("Image changed:", file);
+            // Optionally handle image change
+          }}
+        /> */}
+
+        <PictureContainer
+          imageUrl={userData.profilePicture || "https://s3.amazonaws.com/37assets/svn/765-default-avatar.png"}
+          onImageChange={() => {
+            // Optionally handle image change
           }}
         />
-        <UserName userName={userData.userName} />
-        <Role role={userData.role} />
+        <UserName userName={userData.userName ?? "Unknown User"} />
+        <Role role={userData.role ?? "Unknown"} />
         <GuideButton buttonText="Become a Guide" onClick={onClick} />
       </div>
 
@@ -242,7 +252,7 @@ const Profile = () => {
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    beach_id: parseInt(e.target.value, 10), // Convert the value to an integer
+                    beach_id: parseInt(e.target.value, 10),
                   }))
                 }
                 className="p-3 rounded bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -266,6 +276,7 @@ const Profile = () => {
                 Submit
               </button>
               <button
+                type="button"
                 onClick={closeModal}
                 className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded transition duration-300"
               >

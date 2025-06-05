@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { FaPlus, FaCaretDown } from "react-icons/fa";
-import { FaFilter } from "react-icons/fa6";
 import SearchBar from '@/app/components/atom/addLocation/searchbar';
 import AddButton from '@/app/components/atom/addLocation/addButton';
 import AddLocationMenu from '@/app/components/atom/addLocation/addLocationMenu';
