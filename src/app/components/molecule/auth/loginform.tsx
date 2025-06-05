@@ -4,10 +4,12 @@ import InputField from "../../atom/auth/inputField";
 import LoginButton from "../../atom/auth/loginButton";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../utils/firebaseConfig";
+import { useUserStore } from "@/store/UserStore";
 
 const LoginForm = ({ authType }: { authType: string }) => {
   const [formData, setFormData] = useState({ email: "", password: "", username: "" });
   const [error, setError] = useState<string | null>(null);
+  const {setToken, setRole, setEmail} = useUserStore();
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,11 +21,27 @@ const LoginForm = ({ authType }: { authType: string }) => {
     e.preventDefault();
     setError(null);
     try {
+      // Register user with Firebase
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const token = await userCredential.user.getIdToken();
+
+      // Send user data to backend
+      await fetch("https://sea-venture.org/api/user/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          username: formData.username, 
+          role: "user", 
+        }),
+      });
+
       localStorage.setItem("token", token);
       alert("Registration successful! Redirecting to dashboard...");
-      router.push("/api/user/dashboard");
+      router.push("/user/dashboard");
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : "Registration failed";
       setError(errorMsg);
@@ -34,11 +52,35 @@ const LoginForm = ({ authType }: { authType: string }) => {
     e.preventDefault();
     setError(null);
     try {
+      // Sign in with Firebase Auth
       const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       const token = await userCredential.user.getIdToken();
+
+      // Store token in localStorage
       localStorage.setItem("token", token);
+
+      // Fetch user data from backend using only the token
+      const response = await fetch("https://sea-venture.org/api/user/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const userData = await response.json();
+      setEmail(userData.email);
+      setRole(userData.role);
+      setToken(token);
+
       alert("Login successful! Redirecting to dashboard...");
-      router.push("/api/user/dashboard");
+      router.push("/user/dashboard");
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : "Login failed";
       setError(errorMsg);

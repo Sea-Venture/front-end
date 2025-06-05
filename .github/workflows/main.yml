@@ -1,0 +1,31 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ✅ Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # ✅ Step 2: Install sshpass (needed for password-based SSH)
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      # ✅ Step 3: Deploy frontend via SSH
+      - name: Deploy frontend to server using SSH
+        env:
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@"$SERVER_IP" "bash /root/seaventure/deploy-frontend.sh"
+
+      # ✅ Step 4: Notify on Success
+      - name: Notify
+        run: echo "✅ Frontend deployment completed successfully!"
