@@ -1,8 +1,13 @@
+"use client"
+
 import React from 'react'
+import Blog from './Blog'
 
 const BlogContainer = () => {
   return (
-    <div>BlogContainer</div>
+    <>
+      <Blog />
+    </>
   )
 }
 
