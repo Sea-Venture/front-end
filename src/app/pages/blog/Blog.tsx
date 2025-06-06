@@ -26,8 +26,12 @@ const Blog = () => {
         if (!res.ok) throw new Error("Failed to fetch blogs")
         const data = await res.json()
         setBlogs(data)
-      } catch (err: any) {
-        setError(err.message || "Failed to fetch blogs")
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message)
+        } else {
+          setError("Failed to fetch blogs")
+        }
       } finally {
         setLoading(false)
       }
@@ -46,7 +50,7 @@ const Blog = () => {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch("https://sea-venture.org/api/blogs", {
+      const res = await fetch("https://sea-venture.org/api/blogs/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -56,8 +60,12 @@ const Blog = () => {
       setBlogs([...blogs, newBlog])
       setForm({ blog_name: "", blog_title: "", blog_description: "" })
       setShowForm(false)
-    } catch (err: any) {
-      setError(err.message || "Failed to add blog")
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("Failed to add blog")
+      }
     } finally {
       setLoading(false)
     }
