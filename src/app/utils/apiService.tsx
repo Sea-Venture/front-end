@@ -139,11 +139,18 @@ export const loginUser = async (loginData: { email: string; password: string }):
 };
 
 export const weatherUpdate = async (beach: { beach: string }): Promise<Record<string, unknown>> => {
-  const response = await axios.get(`${API_BASE_URL}/api/user/forecast/`, {
+  const response = await axios.get(`${API_BASE_URL}/api/user/forecast/beach`, {
     params: { beach: beach.beach },
   });
   return response.data;
 };
+
+export const weatherUpdateAdvanced = async (beach: { beach: string }): Promise<Record<string, unknown>> => {
+  const response = await axios.get(`${API_BASE_URL}/api/user/forecast/advanced`, {
+    params: { beach: beach.beach },
+  });
+  return response.data;
+}
 
 
 
