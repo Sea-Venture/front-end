@@ -13,24 +13,28 @@ const Navbar = ({
   onShowProfile: () => void;
 }) => {
   return (
-    <header className="backdrop-blur-lg bg-gradient-to-r from-blue-50 to-blue-100 shadow border-b border-blue-300  sticky top-0 z-30 transition-all duration-300 animate-fadeInDown">
-      <nav className="flex items-center justify-between max-w-7xl mx-auto px-6 py-3 w-full">
+    <header className="backdrop-blur-lg bg-gradient-to-r from-blue-50 to-blue-100 shadow border-b border-blue-300 sticky top-0 z-30 transition-all duration-300 animate-fadeInDown">
+      <nav className="flex items-center max-w-7xl mx-auto px-6 py-3 w-full">
         {/* Logo */}
-        <Link
-          href="/"
-          className="focus:outline-none hover:scale-110 active:scale-95 transition-transform duration-300 rounded-lg flex-shrink-0"
-          aria-label="Home"
-        >
-          <LogoContainer
-            logoName="SeaVentures"
-            imageUrl="https://w7.pngwing.com/pngs/53/343/png-transparent-red-man-surfing-logo-surfing-investment-banking-surf-the-sea-beach-photography-people.png"
-          />
-        </Link>
+        <div className="flex-shrink-0">
+          <Link
+            href="/"
+            className="focus:outline-none hover:scale-110 active:scale-95 transition-transform duration-300 rounded-lg"
+            aria-label="Home"
+          >
+            <LogoContainer
+              logoName="SeaVentures"
+              imageUrl="https://w7.pngwing.com/pngs/53/343/png-transparent-red-man-surfing-logo-surfing-investment-banking-surf-the-sea-beach-photography-people.png"
+            />
+          </Link>
+        </div>
 
         {/* Searchbar */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-md animate-fadeIn">
-          <Searchbar setCardDetails={setCardDetails} />
-        </div>
+        
+
+            <Searchbar setCardDetails={setCardDetails} />
+
+ 
 
         {/* Actions */}
         <div className="flex items-center gap-4 flex-shrink-0">
