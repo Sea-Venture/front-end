@@ -13,12 +13,12 @@ const Navbar = ({
   onShowProfile: () => void;
 }) => {
   return (
-    <header className="backdrop-blur-lg bg-white/60 dark:bg-gray-900/60 border-b border-gray-200 dark:border-gray-800 shadow-xl sticky top-0 z-30 transition-all duration-300">
-      <nav className="flex items-center justify-between max-w-7xl mx-auto px-6 py-3">
+    <header className="backdrop-blur-lg bg-gradient-to-r from-blue-50 to-blue-100 shadow border-b border-blue-300  sticky top-0 z-30 transition-all duration-300 animate-fadeInDown">
+      <nav className="flex items-center justify-between max-w-7xl mx-auto px-6 py-3 w-full">
         {/* Logo */}
         <Link
           href="/"
-          className="focus:outline-none hover:scale-105 active:scale-95 transition-transform duration-200 rounded-lg"
+          className="focus:outline-none hover:scale-110 active:scale-95 transition-transform duration-300 rounded-lg flex-shrink-0"
           aria-label="Home"
         >
           <LogoContainer
@@ -28,16 +28,14 @@ const Navbar = ({
         </Link>
 
         {/* Searchbar */}
-        <div className="flex-1 flex justify-center mx-6">
+        <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-md animate-fadeIn">
           <Searchbar setCardDetails={setCardDetails} />
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4">
-          {/* <DarkModeToggle /> */}
-          {/* <span className="h-8 w-px bg-gray-300 dark:bg-gray-700 mx-2 hidden sm:inline-block" /> */}
+        <div className="flex items-center gap-4 flex-shrink-0">
           <button
-            className="focus:outline-none hover:ring-2 ring-cyan-400 rounded-full transition duration-200"
+            className="focus:outline-none hover:ring-4 ring-blue-300 rounded-full transition duration-300 animate-bounce"
             aria-label="User menu"
             tabIndex={0}
           >
@@ -48,6 +46,28 @@ const Navbar = ({
           </button>
         </div>
       </nav>
+      <style jsx global>{`
+        @keyframes fadeInDown {
+          0% {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeInDown {
+          animation: fadeInDown 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 1s ease;
+        }
+      `}</style>
     </header>
   );
 };

@@ -6,6 +6,7 @@ import NavContainer from '../../atom/landingPage/navContainer'
 import LogoText from '../../atom/landingPage/logoText';
 import NavMenuItems from '../../molecule/landingPage/navMenuItems';
 
+
 const navItems = [
   { name: "Home", url: "/" },
   { name: "About Us", url: "/about" },
@@ -15,6 +16,7 @@ const navItems = [
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+
 
   return (
     <NavContainer>
@@ -29,12 +31,13 @@ const NavBar = () => {
             {menuOpen ? <FaTimes className="w-8 h-8" /> : <FaBars className="w-8 h-8" />}
           </button>
           <div className="hidden lg:flex items-center space-x-10">
-            <NavMenuItems
-              navItems={navItems}
-            />
-            <button className="bg-blue-500 hover:bg-blue-600 transition text-white px-8 py-3 rounded-xl shadow font-semibold text-lg">
+            <NavMenuItems navItems={navItems} />
+            <a
+              href="/login"
+              className="bg-blue-500 hover:bg-blue-600 transition text-white px-8 py-3 rounded-xl shadow font-semibold text-lg flex items-center justify-center"
+            >
               Get Started Now
-            </button>
+            </a>
           </div>
         </div>
         {/* Mobile Menu Overlay */}
@@ -53,21 +56,23 @@ const NavBar = () => {
                 </li>
               ))}
               <li>
-                <button
-                  className="w-full bg-blue-500 hover:bg-blue-600 transition text-white px-10 py-4 rounded-xl shadow font-semibold text-2xl"
+                <a
+                  href="/login"
+                  className="w-full bg-blue-500 hover:bg-blue-600 transition text-white px-10 py-4 rounded-xl shadow font-semibold text-2xl flex items-center justify-center"
                   onClick={() => setMenuOpen(false)}
                 >
                   Booking Now
-                </button>
+                </a>
               </li>
             </ul>
           </div>
         )}
       </nav>
-      {/* Spacer for fixed navbar */}1
+      {/* Spacer for fixed navbar */}
       <div className="h-16 md:h-20"></div>
     </NavContainer>
   );
 };
+
 
 export default NavBar;

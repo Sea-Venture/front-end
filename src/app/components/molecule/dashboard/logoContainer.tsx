@@ -5,7 +5,7 @@ import LogoText from '../../atom/dashboard/navbar/logoText'
 const LogoContainer = ({ logoName, imageUrl }: { logoName: string; imageUrl: string }) => {
   return (
     <div
-      className="flex items-center gap-2 group transition-all duration-200 cursor-pointer"
+      className="flex items-center gap-2 group transition-all duration-200 cursor-pointer h-full"
       tabIndex={0}
       aria-label={logoName}
     >
