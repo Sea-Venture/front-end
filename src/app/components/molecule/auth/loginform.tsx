@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import InputField from "../../atom/auth/inputField";
 import LoginButton from "../../atom/auth/loginButton";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, EmailAuthCredential } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../utils/firebaseConfig";
 import { useUserStore } from "@/store/UserStore";
 import { fetchUserByEmail } from "@/app/utils/apiService";

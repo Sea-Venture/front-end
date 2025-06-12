@@ -3,7 +3,7 @@ import ProfileTitle from '../../atom/dashboard/profile/profileTitle';
 import PictureContainer from '../../molecule/profile/pictureContainer';
 import Role from '../../atom/dashboard/profile/role';
 import UserName from '../../atom/dashboard/profile/userName';
-import { fetchUserByEmail, fetchAllBeaches, createGuide, updateUserRole, fetchUserIdByEmail, fetchUserEmailByToken } from '../../../utils/apiService'; 
+import { fetchUserByEmail, fetchAllBeaches, createGuide, updateUserRole, fetchUserEmailByToken } from '../../../utils/apiService'; 
 import GuideButton from '../../molecule/profile/guideButton';
 
 // Change FormDataType
