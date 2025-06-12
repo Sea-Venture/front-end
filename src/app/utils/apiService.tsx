@@ -40,10 +40,10 @@ export const fetchEventByLocationIdAndActivityId = async (
   return response.data;
 }
 
-export const fetchUserByEmail = async (email: string): Promise<Record<string, unknown>> => {
+export const fetchUserEmailByToken = async (token: string): Promise<Record<string, unknown>> => {
   const response = await axios.post(
-    `${API_BASE_URL}/api/user/profile/`,
-    { email },
+    `${API_BASE_URL}/api/user/auth/email`,
+    { token },
     {
       headers: {
         "Content-Type": "application/json",
@@ -51,6 +51,16 @@ export const fetchUserByEmail = async (email: string): Promise<Record<string, un
     }
   );
   return response.data;
+};
+
+export const fetchUserByEmail = async (email: string): Promise<Record<string, unknown>> => {
+  const response = await axios.get(`${API_BASE_URL}/api/user/profile/email`, {
+    params: { email },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data.user
 };
 
 export const fetchUserIdByEmail = async (email: string): Promise<{ id: string }> => {

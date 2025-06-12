@@ -15,7 +15,6 @@ const Navbar = ({
   return (
     <header className="backdrop-blur-lg bg-white/60 dark:bg-gray-900/60 border-b border-gray-200 dark:border-gray-800 shadow-xl sticky top-0 z-30 transition-all duration-300">
       <nav className="flex items-center justify-between max-w-7xl mx-auto px-6 py-3">
-        {/* Logo */}
         <Link
           href="/"
           className="focus:outline-none hover:scale-105 active:scale-95 transition-transform duration-200 rounded-lg"
@@ -27,15 +26,11 @@ const Navbar = ({
           />
         </Link>
 
-        {/* Searchbar */}
         <div className="flex-1 flex justify-center mx-6">
           <Searchbar setCardDetails={setCardDetails} />
         </div>
 
-        {/* Actions */}
         <div className="flex items-center gap-4">
-          {/* <DarkModeToggle /> */}
-          {/* <span className="h-8 w-px bg-gray-300 dark:bg-gray-700 mx-2 hidden sm:inline-block" /> */}
           <button
             className="focus:outline-none hover:ring-2 ring-cyan-400 rounded-full transition duration-200"
             aria-label="User menu"
