@@ -14,7 +14,7 @@ const Navbar = ({
 }) => {
   return (
     <header className="backdrop-blur-lg bg-gradient-to-r from-blue-50 to-blue-100 shadow border-b border-blue-300 sticky top-0 z-30 transition-all duration-300 animate-fadeInDown">
-      <nav className="flex items-center max-w-7xl mx-auto px-6 py-3 w-full">
+      <nav className="flex items-center justify-between max-w-7xl mx-auto px-6 py-3 w-full">
         {/* Logo */}
         <div className="flex-shrink-0">
           <Link
@@ -30,14 +30,12 @@ const Navbar = ({
         </div>
 
         {/* Searchbar */}
-        
-
-            <Searchbar setCardDetails={setCardDetails} />
-
- 
+        <div className="flex-1 flex justify-center mx-6">
+          <Searchbar setCardDetails={setCardDetails} />
+        </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4 flex-shrink-0">
+        <div className="flex items-center gap-4">
           <button
             className="focus:outline-none hover:ring-4 ring-blue-300 rounded-full transition duration-300 animate-bounce"
             aria-label="User menu"

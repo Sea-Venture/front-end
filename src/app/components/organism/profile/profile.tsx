@@ -3,9 +3,10 @@ import ProfileTitle from '../../atom/dashboard/profile/profileTitle';
 import PictureContainer from '../../molecule/profile/pictureContainer';
 import Role from '../../atom/dashboard/profile/role';
 import UserName from '../../atom/dashboard/profile/userName';
-import { fetchUserByEmail, fetchAllBeaches, createGuide, updateUserRole, fetchUserIdByEmail } from '../../../utils/apiService'; 
+import { fetchUserByEmail, fetchAllBeaches, createGuide, updateUserRole, fetchUserIdByEmail, fetchUserEmailByToken } from '../../../utils/apiService'; 
 import GuideButton from '../../molecule/profile/guideButton';
 
+// Change FormDataType
 type FormDataType = {
   f_name: string;
   l_name: string;
@@ -14,18 +15,20 @@ type FormDataType = {
   area: string;
   nic_photo: string;     
   phone_number: string;
-  beach_id: number;
+  beach_id: string | number; // allow empty string
 };
 
 interface UserData {
-  profilePicture?: string;
+  ID?: number;
+  CreatedAt?: string;
   userName?: string;
+  email?: string;
   role?: string;
-  // add other properties as needed
+  profilePic?: string;
 }
 
 interface Beach {
-  beach_id: number;
+  ID: number;
   beach_name: string;
 }
 
@@ -42,18 +45,37 @@ const Profile = () => {
     nic_photo: '',
     area: '',
     phone_number: '',
-    beach_id: 0,
+    beach_id: '', // set to empty string initiall
   });
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const email = localStorage.getItem("email");
-        if (!email) {
-          throw new Error("Email not found in localStorage");
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error("Token not found in localStorage");
         }
-        const data = await fetchUserByEmail(email);
-        setUserData(data);
+
+        const emailResult = await fetchUserEmailByToken(token);
+
+        if (!emailResult) {
+          throw new Error("Failed to fetch email from token");
+        }
+
+
+        const email = emailResult.email;
+        if (typeof email !== 'string') {
+          throw new Error("Email is not a string");
+        }
+        localStorage.setItem('email', email);
+
+        const user = await fetchUserByEmail(email);
+        if (!user) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        setUserData(user);
+
         setError(null);
       } catch {
         setError("Failed to fetch user data. Please try again later.");
@@ -66,13 +88,12 @@ const Profile = () => {
         setBeaches(
           Array.isArray(beachesData)
             ? beachesData.map((b) => ({
-                beach_id: Number((b as Record<string, unknown>).beach_id),
+                ID: Number((b as Record<string, unknown>).ID),
                 beach_name: String((b as Record<string, unknown>).beach_name),
               }))
             : []
         );
       } catch {
-        // Optionally handle error here
         // setBeaches([]);
       }
     };
@@ -113,8 +134,6 @@ const Profile = () => {
       const fileName = `${formData.f_name}-${formData.l_name}-${name}-${Date.now()}.${file.name.split('.').pop()}`;
       const filePath = `${folderPath}${fileName}`;
 
-      // You may want to upload the file here instead of just creating a link
-      // For now, just set the file path in the form data
       setFormData((prev) => ({
         ...prev,
         [name]: filePath,
@@ -124,6 +143,10 @@ const Profile = () => {
 
   const sendFormData = async () => {
     try {
+      if (!userData?.ID) {
+        throw new Error("User ID is missing");
+      }
+
       const guideData = {
         f_name: formData.f_name,
         l_name: formData.l_name,
@@ -132,24 +155,19 @@ const Profile = () => {
         area: formData.area,
         nic_photo: formData.nic_photo,
         phone_number: formData.phone_number,
-        beach_id: formData.beach_id,
+        beach_id: Number(formData.beach_id),
+        user_id: userData.ID, // Pass user ID here
       };
 
-      const email = localStorage.getItem("email");
-      if (!email) {
-        throw new Error("Email is null or undefined");
-      }
-      const userId = await fetchUserIdByEmail(email);
       await createGuide(guideData);
 
       const role = "guide";
-      await updateUserRole(Number(userId.id), role);
+      await updateUserRole(userData.ID, role);
 
       alert("Guide created successfully! Please log in again to update your role.");
       closeModal();
-      window.location.href = "/api/login";
+      window.location.href = "/login";
     } catch (err) {
-      // Optionally show error to user
       console.error("Failed to create guide:", err);
     }
   };
@@ -158,22 +176,17 @@ const Profile = () => {
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
       <ProfileTitle title="User Profile" />
       <div className="mt-4 p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
-        {/* <PictureContainer
-          imageUrl={userData.profilePicture || "https://s3.amazonaws.com/37assets/svn/765-default-avatar.png"}
-          onImageChange={(file: File | null) => {
-            // Optionally handle image change
-          }}
-        /> */}
-
         <PictureContainer
-          imageUrl={userData.profilePicture || "https://s3.amazonaws.com/37assets/svn/765-default-avatar.png"}
+          imageUrl={userData.profilePic || "https://s3.amazonaws.com/37assets/svn/765-default-avatar.png"}
           onImageChange={() => {
             // Optionally handle image change
           }}
         />
         <UserName userName={userData.userName ?? "Unknown User"} />
         <Role role={userData.role ?? "Unknown"} />
-        <GuideButton buttonText="Become a Guide" onClick={onClick} />
+        {userData.role === "user" && (
+          <GuideButton buttonText="Become a Guide" onClick={onClick} />
+        )}
       </div>
 
       {/* Modal */}
@@ -252,17 +265,19 @@ const Profile = () => {
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    beach_id: parseInt(e.target.value, 10),
+                    beach_id: e.target.value,
                   }))
                 }
                 className="p-3 rounded bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="" disabled>Select Beach</option>
-                {beaches.map((beach) => (
-                  <option key={beach.beach_id} value={beach.beach_id}>
-                    {beach.beach_name}
-                  </option>
-                ))}
+                {beaches
+                  .filter((b) => b.ID != null)
+                  .map((beach) => (
+                    <option key={beach.ID} value={beach.ID}>
+                      {beach.beach_name}
+                    </option>
+                  ))}
               </select>
             </form>
 

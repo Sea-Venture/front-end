@@ -11,7 +11,7 @@ const AvatarMenu = ({
 }) => {
   const handleItemClick = (itemName: string) => {
     if (itemName === "Profile") {
-      onProfileClick(); // Call the onProfileClick function
+      onProfileClick();
     }
     if (itemName === "Logout") {
       console.log("Logging out...");

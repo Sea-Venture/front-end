@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import InputField from "../../atom/auth/inputField";
 import LoginButton from "../../atom/auth/loginButton";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, EmailAuthCredential } from "firebase/auth";
 import { auth } from "../../../utils/firebaseConfig";
 import { useUserStore } from "@/store/UserStore";
+import { fetchUserByEmail } from "@/app/utils/apiService";
 
 const LoginForm = ({ authType }: { authType: string }) => {
   const [formData, setFormData] = useState({ email: "", password: "", username: "" });
@@ -39,6 +40,7 @@ const LoginForm = ({ authType }: { authType: string }) => {
         }),
       });
 
+      
       localStorage.setItem("token", token);
       alert("Registration successful! Redirecting to dashboard...");
       router.push("/user/dashboard");
@@ -52,14 +54,13 @@ const LoginForm = ({ authType }: { authType: string }) => {
     e.preventDefault();
     setError(null);
     try {
-      // Sign in with Firebase Auth
       const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       const token = await userCredential.user.getIdToken();
 
-      // Store token in localStorage
       localStorage.setItem("token", token);
 
-      // Fetch user data from backend using only the token
+
+
       const response = await fetch("https://sea-venture.org/api/user/auth/login", {
         method: "POST",
         headers: {
@@ -79,8 +80,16 @@ const LoginForm = ({ authType }: { authType: string }) => {
       setRole(userData.role);
       setToken(token);
 
+      const user = await fetchUserByEmail(formData.email);
+
       alert("Login successful! Redirecting to dashboard...");
+      alert(user)
+      if (user.role === "guide") {
+      router.push("/guide/dashboard");
+    } else if (user.role === "user") {
       router.push("/user/dashboard");
+    }
+
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : "Login failed";
       setError(errorMsg);
