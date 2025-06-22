@@ -64,13 +64,11 @@ const Card: React.FC<CardProps> = ({
     setShowMap(false);
   };
 
-  // Helper function to capitalize the first letter
   const capitalizeFirstLetter = (str: string) => {
     if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  // Type guard for weather error
   function isWeatherError(obj: unknown): obj is { error: string } {
     return (
       typeof obj === "object" &&
@@ -129,7 +127,6 @@ const Card: React.FC<CardProps> = ({
         </div>
       )}
 
-      {/* Map Modal */}
       {showMap && lat && lng && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white rounded-lg shadow-lg p-6 relative w-[400px] h-[400px] flex flex-col items-center">
