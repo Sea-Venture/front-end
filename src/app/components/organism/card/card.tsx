@@ -8,8 +8,9 @@ import LocationImage from '../../atom/dashboard/card/locationImage';
 import ActivityName from '../../atom/dashboard/card/activityName';
 import EventDescription from '../../atom/dashboard/card/eventDescription';
 import IconButton from '../../atom/dashboard/card/iconButton';
-import { weatherUpdate } from '../../../utils/apiService';
+import { weatherUpdate, getGeminiInsightClient } from '../../../utils/apiService';
 import WeatherCard from '../weather/weatherCard';
+import test from 'node:test';
 
 interface CardProps {
   imageUrl: string;
@@ -36,17 +37,30 @@ const Card: React.FC<CardProps> = ({
   const [weatherData, setWeatherData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [geminiInsight, setGeminiInsight] = useState<string | null>(null);
+  const [geminiLoading, setGeminiLoading] = useState(false);
 
   const handleWeatherClick = async () => {
     setShowWeather(true);
     setLoading(true);
+    setGeminiInsight(null);
     try {
       const newLocation = capitalizeFirstLetter(locationName);
-      console.log("Fetching weather for:", newLocation);
       const data = await weatherUpdate({ beach: newLocation });
       setWeatherData(data);
+
+
+      setGeminiLoading(true);
+      try {
+        const insight = await getGeminiInsightClient(data);
+        setGeminiInsight(insight);
+      } catch {
+        setGeminiInsight("Failed to get insight from Gemini.");
+      }
+      setGeminiLoading(false);
     } catch {
       setWeatherData({ error: "Failed to load weather." });
+      setGeminiInsight(null);
     }
     setLoading(false);
   };
@@ -122,6 +136,17 @@ const Card: React.FC<CardProps> = ({
             )}
             {!loading && isWeatherError(weatherData) && (
               <div className="text-red-500">{weatherData.error}</div>
+            )}
+            {/* Gemini Insight */}
+            {!loading && !isWeatherError(weatherData) && (
+              <div className="mt-4">
+                <h3 className="font-semibold mb-1">Gemini Insight</h3>
+                {geminiLoading ? (
+                  <div>Loading insight...</div>
+                ) : (
+                  <div className="text-slate-700">{geminiInsight}</div>
+                )}
+              </div>
             )}
           </div>
         </div>

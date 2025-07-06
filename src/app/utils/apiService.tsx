@@ -163,3 +163,22 @@ export const weatherUpdateAdvanced = async (beach: { beach: string }): Promise<R
   });
   return response.data;
 }
+
+
+export const getGeminiInsightClient = async (weatherData: Record<string, unknown>): Promise<string> => {
+  const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+  const endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
+  const prompt = `Give an insightful summary or advice for this weather data: ${JSON.stringify(weatherData)}`;
+
+  const response = await fetch(`${endpoint}?key=${apiKey}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }]
+    }),
+  });
+
+  if (!response.ok) throw new Error("Failed to get Gemini insight");
+  const data = await response.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "No insight available.";
+};
